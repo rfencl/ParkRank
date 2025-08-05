@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import type { ParkWithRank } from "@shared/schema";
 
 export default function RankingsTable() {
+  const [showAll, setShowAll] = useState(false);
   const { data: rankings, isLoading } = useQuery<ParkWithRank[]>({
     queryKey: ['/api/parks/rankings'],
   });
@@ -73,7 +75,7 @@ export default function RankingsTable() {
     );
   }
 
-  const topRankings = rankings.slice(0, 10);
+  const displayedRankings = showAll ? rankings : rankings.slice(0, 10);
 
   return (
     <Card className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -91,7 +93,7 @@ export default function RankingsTable() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {topRankings.map((park) => (
+            {displayedRankings.map((park) => (
               <tr key={park.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex items-center justify-center w-8 h-8 text-sm font-medium rounded-full ${getRankBadgeColor(park.rank)}`}>
@@ -116,8 +118,12 @@ export default function RankingsTable() {
         </table>
       </div>
       <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <Button variant="ghost" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-          View all {rankings.length} parks →
+        <Button 
+          variant="ghost" 
+          className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+          onClick={() => setShowAll(!showAll)}
+        >
+          {showAll ? 'Show top 10 only' : `View all ${rankings.length} parks →`}
         </Button>
       </div>
     </Card>

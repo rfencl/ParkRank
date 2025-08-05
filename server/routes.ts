@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertVoteSchema } from "@shared/schema";
+import { insertVoteSchema, submitVoteSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -41,7 +41,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit vote
   app.post("/api/vote", async (req, res) => {
     try {
-      const voteData = insertVoteSchema.parse(req.body);
+      const voteData = submitVoteSchema.parse(req.body);
       
       // Calculate ELO changes
       const winner = await storage.getPark(voteData.winnerId);

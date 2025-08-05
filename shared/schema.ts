@@ -36,6 +36,12 @@ export const insertParkSchema = createInsertSchema(parks).omit({
   losses: true,
 });
 
+// Simple vote schema for frontend submissions (just winner and loser)
+export const submitVoteSchema = z.object({
+  winnerId: z.string(),
+  loserId: z.string(),
+});
+
 export const insertVoteSchema = createInsertSchema(votes).omit({
   id: true,
   createdAt: true,
