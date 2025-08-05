@@ -33,10 +33,10 @@ export class MemStorage implements IStorage {
         id: 'acadia',
         name: 'Acadia',
         location: 'Maine',
-        description: 'Covering most of Mount Desert Island and other coastal islands, featuring granite peaks, ocean shoreline, and diverse ecosystems.',
+        description: 'Covering most of Mount Desert Island and other coastal islands, Acadia features the tallest mountain on the Atlantic coast of the United States, granite peaks, ocean shoreline, woodlands, and lakes.',
         imageUrl: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400',
         dateEstablished: 'February 26, 1919',
-        area: '49,071 acres',
+        area: '49,071.40 acres',
         visitors: '3,961,661',
         emoji: '🌊'
       },
@@ -44,10 +44,10 @@ export class MemStorage implements IStorage {
         id: 'american-samoa',
         name: 'American Samoa',
         location: 'American Samoa',
-        description: 'The southernmost national park protecting coral reefs, rainforests, volcanic mountains, and white beaches in the South Pacific.',
+        description: 'The southernmost national park is on three Samoan islands in the South Pacific. It protects coral reefs, rainforests, volcanic mountains, and white beaches.',
         imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400',
         dateEstablished: 'October 31, 1988',
-        area: '8,257 acres',
+        area: '8,256.67 acres',
         visitors: '22,567',
         emoji: '🏝️'
       },
@@ -55,23 +55,23 @@ export class MemStorage implements IStorage {
         id: 'arches',
         name: 'Arches',
         location: 'Utah',
-        description: 'Features more than 2,000 natural sandstone arches, including the famous Delicate Arch, formed by millions of years of erosion.',
+        description: 'This red-rock wonderland features more than 2,000 natural sandstone arches, including the world-famous Delicate Arch. The park preserves over 76,000 acres of high desert landscape.',
         imageUrl: 'https://images.unsplash.com/photo-1434725039720-aaad6dd32dfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400',
         dateEstablished: 'November 12, 1971',
-        area: '76,679 acres',
-        visitors: '1,466,528',
-        emoji: '🏜️'
+        area: '76,678.98 acres',
+        visitors: '1,806,865',
+        emoji: '🌅'
       },
       {
         id: 'badlands',
         name: 'Badlands',
         location: 'South Dakota',
-        description: 'A collection of buttes, pinnacles, spires, and mixed-grass prairies containing the largest assemblage of Oligocene mammal fossils.',
+        description: 'Layered rock formations tell the story of 75 million years of geological history. This otherworldly landscape contains the largest undisturbed mixed grass prairie in the National Park System.',
         imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400',
         dateEstablished: 'November 10, 1978',
-        area: '242,756 acres',
-        visitors: '1,094,245',
-        emoji: '🗻'
+        area: '242,755.94 acres',
+        visitors: '1,207,534',
+        emoji: '🏔️'
       },
       {
         id: 'big-bend',
@@ -751,7 +751,11 @@ export class MemStorage implements IStorage {
       elo: park.elo || 1500,
       totalVotes: 0,
       wins: 0,
-      losses: 0
+      losses: 0,
+      area: park.area || null,
+      dateEstablished: park.dateEstablished || null,
+      visitors: park.visitors || null,
+      emoji: park.emoji || '🏞️',
     };
     this.parks.set(newPark.id, newPark);
     return newPark;
@@ -787,8 +791,13 @@ export class MemStorage implements IStorage {
 
   async createVote(vote: InsertVote): Promise<Vote> {
     const newVote: Vote = {
-      ...vote,
       id: randomUUID(),
+      winnerId: vote.winnerId,
+      loserId: vote.loserId,
+      winnerEloChange: vote.winnerEloChange,
+      loserEloChange: vote.loserEloChange,
+      winnerEloAfter: vote.winnerEloAfter,
+      loserEloAfter: vote.loserEloAfter,
       createdAt: new Date()
     };
     this.votes.push(newVote);

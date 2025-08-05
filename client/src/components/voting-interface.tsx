@@ -162,6 +162,18 @@ export default function VotingInterface() {
           </CardContent>
         </Card>
       </div>
+      
+      {/* Skip Button */}
+      <div className="text-center mt-6">
+        <Button 
+          variant="outline" 
+          onClick={() => refetch()}
+          disabled={voteMutation.isPending}
+          className="px-6 py-2 text-gray-600 hover:text-gray-800 border-gray-300 hover:border-gray-400"
+        >
+          Skip this matchup →
+        </Button>
+      </div>
     </div>
   );
 }
