@@ -9,7 +9,7 @@ export interface IStorage {
   updatePark(id: string, updates: Partial<Park>): Promise<Park | undefined>;
   getRandomMatchup(): Promise<[Park, Park] | null>;
   getRankedParks(): Promise<ParkWithRank[]>;
-  
+
   // Votes
   createVote(vote: InsertVote): Promise<Vote>;
   getRecentVotes(limit?: number): Promise<VoteWithParks[]>;
@@ -243,7 +243,7 @@ export class MemStorage implements IStorage {
         name: 'Gates of the Arctic',
         location: 'Alaska',
         description: 'The northernmost and most remote park, entirely above the Arctic Circle, with no roads, trails, or facilities.',
-        imageUrl: 'PLACEHOLDER_IMAGE',
+        imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
         dateEstablished: 'December 2, 1980',
         area: '7,523,898 acres',
         visitors: '11,904',
@@ -254,7 +254,7 @@ export class MemStorage implements IStorage {
         name: 'Gateway Arch',
         location: 'Missouri',
         description: 'The smallest national park, featuring the iconic 630-foot Gateway Arch and museum celebrating westward expansion.',
-        imageUrl: 'PLACEHOLDER_IMAGE',
+        imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7d0e536?w=400&h=300&fit=crop',
         dateEstablished: 'February 22, 2018',
         area: '193 acres',
         visitors: '1,865,590',
@@ -764,7 +764,7 @@ export class MemStorage implements IStorage {
   async updatePark(id: string, updates: Partial<Park>): Promise<Park | undefined> {
     const park = this.parks.get(id);
     if (!park) return undefined;
-    
+
     const updatedPark = { ...park, ...updates };
     this.parks.set(id, updatedPark);
     return updatedPark;
@@ -781,7 +781,7 @@ export class MemStorage implements IStorage {
   async getRankedParks(): Promise<ParkWithRank[]> {
     const parks = Array.from(this.parks.values());
     const sorted = parks.sort((a, b) => b.elo - a.elo);
-    
+
     return sorted.map((park, index) => ({
       ...park,
       rank: index + 1,
@@ -827,7 +827,7 @@ export class MemStorage implements IStorage {
   async getVotesToday(): Promise<number> {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     return this.votes.filter(vote => vote.createdAt >= today).length;
   }
 }
