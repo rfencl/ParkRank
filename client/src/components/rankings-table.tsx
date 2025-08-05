@@ -75,7 +75,10 @@ export default function RankingsTable() {
     );
   }
 
-  const displayedRankings = showAll ? rankings : rankings.slice(0, 10);
+ const displayedRankings = (showAll ? rankings : rankings.slice(0, 10)).map(park => ({
+  ...park,
+  change: park.elo - 1500,
+}));
 
   return (
     <Card className="bg-white rounded-2xl shadow-lg overflow-hidden">

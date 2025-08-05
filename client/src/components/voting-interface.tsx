@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
+import { ParkWithRank } from "@shared/schema";
 
 interface Matchup {
   parkA: {
@@ -65,6 +66,13 @@ export default function VotingInterface() {
     voteMutation.mutate({ winnerId, loserId });
   };
 
+  const { data: rankings } = useQuery<ParkWithRank[]>({
+    queryKey: ['/api/parks/rankings'],
+  });
+
+  const parkARank = rankings?.find(p => p.id === matchup?.parkA.id)?.rank;
+  const parkBRank = rankings?.find(p => p.id === matchup?.parkB.id)?.rank;
+
   if (isLoading) {
     return (
       <div className="mb-12">
@@ -101,11 +109,18 @@ export default function VotingInterface() {
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8 max-w-4xl mx-auto">
         {/* Park A Card */}
         <Card className="w-full lg:w-80 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+          <div className="relative">
           <img 
             src={matchup.parkA.imageUrl} 
             alt={`${matchup.parkA.name} National Park`}
             className="w-full h-48 object-cover"
           />
+         {parkARank && (
+            <span className="absolute top-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded-lg shadow">
+              rank #{parkARank}
+            </span>
+            )}
+          </div>
           <CardContent className="p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <span>{matchup.parkA.emoji}</span>
@@ -136,11 +151,18 @@ export default function VotingInterface() {
 
         {/* Park B Card */}
         <Card className="w-full lg:w-80 bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+          <div className="relative">
           <img 
             src={matchup.parkB.imageUrl}
             alt={`${matchup.parkB.name} National Park`}
             className="w-full h-48 object-cover"
           />
+          {parkBRank && (
+            <span className="absolute top-2 right-2 bg-black bg-opacity-80 text-white text-xs px-2 py-1 rounded-lg shadow">
+              rank #{parkBRank}
+            </span>
+            )}   
+          </div>  
           <CardContent className="p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <span>{matchup.parkB.emoji}</span>
